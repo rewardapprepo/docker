@@ -1,21 +1,21 @@
 version: '3'
 services:
   discovery:
-    image: celikdogancan/discovery:1.0.0
+    image: dogancancelik/discovery:latest
     container_name: discovery
     ports:
       - "8010:8010"
     networks: 
       - postgres
   config-server:
-    image: celikdogancan/config-server:latest
+    image: dogancancelik/config-server:latest
     container_name: config-server
     ports:
       - "8012:8012"
     networks: 
       - postgres
   gateway:
-    image: celikdogancan/gateway:1.0.0
+    image: dogancancelik/gateway:latest
     container_name: gateway
     ports:
       - "8011:8011"
@@ -23,7 +23,7 @@ services:
     networks: 
       - postgres
   user-service:
-    image: celikdogancan/user-service:0.0.1
+    image: dogancancelik/user-service:0.0.1
     container_name: user-service
     ports:
       - "8014:8014"
@@ -33,7 +33,7 @@ services:
     networks: 
       - postgres
   reward-service:
-    image: celikdogancan/reward-service:0.0.1
+    image: dogancancelik/reward-service:0.0.1
     container_name: reward-service
     ports:
       - "8013:8013"
