@@ -1,0 +1,61 @@
+version: '3'
+services:
+  discovery:
+    image: celikdogancan/discovery:1.0.0
+    container_name: discovery
+    ports:
+      - "8010:8010"
+    networks: 
+      - postgres
+  config-server:
+    image: celikdogancan/config-server:latest
+    container_name: config-server
+    ports:
+      - "8012:8012"
+    networks: 
+      - postgres
+  gateway:
+    image: celikdogancan/gateway:1.0.0
+    container_name: gateway
+    ports:
+      - "8011:8011"
+    restart: always
+    networks: 
+      - postgres
+  user-service:
+    image: celikdogancan/user-service:0.0.1
+    container_name: user-service
+    ports:
+      - "8014:8014"
+    restart: always
+    depends_on:
+      - rewardapp_postgresql
+    networks: 
+      - postgres
+  reward-service:
+    image: celikdogancan/reward-service:0.0.1
+    container_name: reward-service
+    ports:
+      - "8013:8013"
+    restart: always
+    depends_on:
+      - rewardapp_postgresql
+    networks: 
+      - postgres
+  rewardapp_postgresql:
+    image: postgres
+    container_name: rewardapp_postgresql
+    volumes:
+        - ./init.sql /docker-entrypoint-initdb.d/init.sql
+    environment:
+        - POSTGRES_MULTIPLE_DATABASES=userdb,rewarddb
+        - POSTGRES_USER=coffeeapp
+        - POSTGRES_PASSWORD=coffeeapp
+        - POSTGRES_INITDB_ARGS= "-A md5"
+    ports:
+      - "5432:5432"
+    networks: 
+      - postgres
+networks:
+  postgres:
+    driver: bridge
